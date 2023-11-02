@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" type="text/css" href="./styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap" rel="stylesheet">
+    <title>KangaCare Interface</title>
+    <style>
+
+
+
+        body{
+            background-color: rgb(83, 83, 236);
+            font-family:'Open Sans';
+            font-weight: 300;
+           
+        }
+       /* Container for the two columns */
+       .container {
+            display: flex;
+         
+        }
+#messages{
+  
+    width: 20%;
+    text-align: center;
+    /* padding: 0.01rem; */
+    border-radius: 5px;
+    background-color: white;
+    margin-bottom: 0.01rem;
+}
+
+        /* Existing styles are retained */
+.sidebar {
+    flex: 3; /* Take up 50% of the container */
+    width: 200px;
+    padding: 20px;
+    background-color: #f4f4f4;
+    border-right: 1px solid #ddd;
+
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+
+}
+
+.child-info {
+    flex: 7; /* Take up 50% of the container */
+    flex-grow: 1;
+    padding: 20px;
+    background-color: #e9e8e8e6;
+    
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+
+}
+
+#child-list {
+    list-style: none;
+    padding: 0;
+}
+
+
+.child-card {
+    display: inline-block;
+    width: 30%;
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin: 5px;
+    text-align: center;
+}
+
+.child-card {
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+
+.child-card:hover {
+    background-color: #eee;
+}
+
+
+/* Style for the status indicator */
+.status-indicator {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    margin: 0 10px; /* Adjust spacing as needed */
+}
+
+/* Style for a green status (okay) */
+.status-indicator.okay {
+    background-color: green;
+}
+
+/* Style for a red status (abnormal) */
+.status-indicator.abnormal {
+    background-color: red;
+}
+
+    </style>
+</head>
+
+
+<body>
+    <h1 style="color: white;">KangaCare Vitals Monitoring</h1>
+
+    <div id="messages"><p style="color: black;">Loading...</p></div>
+
+    <div class="container">
+        <div class="sidebar">
+            <h2>BabyCarriers</h2>
+            <ul id="child-list">
+                <!-- Child list will be dynamically generated here -->
+            </ul>
+        </div>
+        <div class="child-info">
+            <h2>Child Information</h2>
+            <div id="child-info-details">
+                <!-- Child info details will be dynamically generated here -->
+            </div>
+            <h2>Historical Temperature Data</h2>
+            <div id="historical-temperature">
+                <!-- Historical temperature data will be dynamically generated here -->
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+
+    
+    <script type="text/javascript">
+
+        // Replace with your ESP32 server's IP address and port
+        const serverAddress = "ws://192.168.10.104:80/ws";
+
+        const messagesElement = document.getElementById("messages");
+
+        const socket = new WebSocket(serverAddress);
+
+        socket.onopen = (event) => {
+            messagesElement.innerHTML = '<p style="color: green;">Connected to server.</p>';
+        };
+
+        socket.onmessage = (event) => {
+            messagesElement.innerHTML = '<p>Server: ' + event.data + '</p>';
+        };
+
+        socket.onclose = (event) => {
+            messagesElement.innerHTML = '<p style="color: red;">Connection closed.</p>';
+        };
+
+        socket.onerror =(event) => {
+            messagesElement.innerHTML = '<p style="color: red;">Connection Failed</p>';
+        };
+
+        // sendButton.addEventListener('click', () => {
+        //     const message = messageInput.value;
+        //         if (message) {
+        //             var jsonData = {
+        //             message: message
+        //         };
+        //         socket.send(JSON.stringify(jsonData));
+        //         messagesElement.innerHTML += '<p>You: ' + message + '</p>';
+        //         messageInput.value = '';
+        //     }
+        // });
+    </script>
+</body>
+
+
+</html>
